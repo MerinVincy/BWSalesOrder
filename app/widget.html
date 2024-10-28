@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>Sales Order Widget</title>
+      <meta charset="utf-8">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <link rel="stylesheet" href="./css/bootstrap.min.css">     
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">      
+      <link rel="stylesheet" href="./css/style.css">
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>      
+      <script src="./js/bootstrap.min.js"></script>
+      <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+   </head>
+   <body>
+      <div id="loader" style="display: none;">
+         <div class="loader-icon"></div>
+       </div>
+      <div id="content">
+      <form id="salesForm">
+      <div class="container-fluid">
+         <div class="col-12">
+            <h4 style="margin-bottom: 2%;font-size: 1rem;">Sales Order Information</h4>
+         </div>
+      <div class="row pb-3">
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="customerName" class="mr-sm-2 justify-content-end">Customer Name</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <select class="form-control w-100" id="customerName" disabled>
+                  <option value="">Please Select</option>
+               </select>
+            </div>
+         </div>
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="brandTemplate" class="mr-sm-2 justify-content-end">Brand Template</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <select class="form-control w-100" id="brandTemplate" disabled>
+                  <option value="">Please Select</option>
+               </select>
+            </div>
+         </div>
+      </div>
+
+      <div class="row pb-3">
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="salesOrderDate" class="mr-sm-2 justify-content-end">Sales Order Date</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <div class="input-group date" data-date-format="mm-dd-yyyy"> 
+                  <input class="form-control" id="salesOrderDate" type="date">
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="orderDueDate" class="mr-sm-2 justify-content-end">Order Due Date</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <div class="input-group date" data-date-format="mm-dd-yyyy"> 
+                  <input class="form-control" id="orderDueDate" type="date">
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row pb-3">
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="salesOrderNo" class="mr-sm-2 justify-content-end">Sales Order No #</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <input type="text" class="form-control" id="salesOrderNo">
+            </div>
+         </div>
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="referenceNo" class="mr-sm-2 justify-content-end">Reference No #</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <input type="text" class="form-control" id="referenceNo">
+            </div>
+         </div>
+      </div>
+
+      <div class="col-12">
+         <h4 style="margin-bottom: 2%;font-size: 1rem;">Address Information</h4>
+      </div>
+      <div class="row pb-3">
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="billingAddress" class="mr-sm-2 justify-content-end">Billing Address</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <select class="form-control w-100" id="billingAddress">
+                  <option value="">Please Select</option>
+               </select>
+            </div>
+         </div>
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="shippingAddress" class="mr-sm-2 justify-content-end">Shipping Address</label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <select class="form-control w-100" id="shippingAddress">
+                  <option value="">Please Select</option>
+               </select>
+            </div>
+         </div>
+      </div>
+      <div class="row pb-3">
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="billingStreet" class="mr-sm-2 justify-content-end">Billing Street </label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <input type="text" class="form-control" id="billingStreet" disabled>
+            </div>
+         </div>
+         <div class="col-sm-6 col-6 form-inline">
+            <div class="col-sm-3 col-12">
+               <label for="shippingStreet" class="mr-sm-2 justify-content-end">Shipping Street </label>
+            </div>
+            <div class="col-sm-8 col-12">
+               <input type="text" class="form-control" id="shippingStreet" disabled>
+            </div>
+         </div>
+      </div>
+      <div class="row pb-3">
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="billingCity" class="mr-sm-2 justify-content-end">Billing City </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="billingCity" disabled>
+         </div>
+      </div>
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="shippingCity" class="mr-sm-2 justify-content-end">Shipping City </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="shippingCity" disabled>
+         </div>
+      </div>
+   </div>
+   <div class="row pb-3">
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="billingState" class="mr-sm-2 justify-content-end">Billing State  </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="billingState" disabled>
+         </div>
+      </div>
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="shippingState" class="mr-sm-2 justify-content-end">Shipping State  </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="shippingState" disabled>
+         </div>
+      </div>
+   </div>
+   <div class="row pb-3" style="display: none;">
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="billingCode" class="mr-sm-2 justify-content-end">Billing Code   </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="billingCode" disabled>
+         </div>
+      </div>
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="shippingCode" class="mr-sm-2 justify-content-end">Shipping Code   </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="shippingCode" disabled>
+         </div>
+      </div>
+   </div>
+   <div class="row pb-3">
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="billingCountry" class="mr-sm-2 justify-content-end">Billing Country </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="billingCountry" disabled>
+         </div>
+      </div>
+      <div class="col-sm-6 col-6 form-inline">
+         <div class="col-sm-3 col-12">
+            <label for="shippingCountry" class="mr-sm-2 justify-content-end">Shipping Country </label>
+         </div>
+         <div class="col-sm-8 col-12">
+            <input type="text" class="form-control" id="shippingCountry" disabled>
+         </div>
+      </div>
+   </div>
+
+      <div class="first-session">
+         <div class="col-12 contHeadInfo">
+            <h4 style="margin-top: 3%;margin-bottom: 2%;font-size: 1rem;">Ordered Items</h4>
+         </div>
+         <div class="item-session">
+            <div class="container-fluid">
+               <div class="row pb-3">
+                  <div class="col-12">
+                   
+                  </div>
+                  <div class="col-12">
+                     <table id="itemTable" class="table table-bordered" style="width: 98% !important;">
+                        <thead>
+                           <tr>                              
+                              <th class="th300">Item Details</th>                                 
+                              <th>Quantity</th>  
+                              <th>Rate</th>       
+                              <th>Discount</th>   
+                              <th>Tax</th>                        
+                              <th>Total</th>
+                              <th style="border: none;"></th>
+                           </tr>
+                        </thead>
+                        <tbody id="itemBody">
+                           <tr style="display: none;font-size: 14px;"  index="###" >                           
+                              <td style="max-width:300px;width:300px;">
+                                 <select id="SelExample" class="form-control" name="item" id="item_###" index="###" onchange="selectItem(this);">
+                                    <option value="">Select item</option>
+                                 </select>
+                                 <textarea class="form-control" rows="3" name="p_description" id="p_description_###" index="###" placeholder="Description" disabled></textarea>
+                              </td>
+                              <td><input type="number" class="form-control" name="p_quantity" id="p_quantity_###" index="###" onchange="calcAmount(event,this)"></td>
+                              <td>
+                                <input type="text" class="form-control symbol-unit hiddenctrl" name="p_unitPrice" id="p_unitPrice_###" index="###" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" disabled>
+                                <input type="text" class="form-control symbol-unit" name="p_unitPriceshow" id="p_unitPrice_###_show" index="###" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" disabled>
+                                </td>
+                                <td><input type="number" class="form-control" name="p_discount" id="p_discount_###" index="###" onchange="calcAmount(event,this)"></td>
+                                <td><input type="number" class="form-control" name="p_tax" id="p_tax_###" index="###" onchange="calcAmount(event,this)"></td>
+                              <td>
+                                 <input type="text" class="form-control symbol-unit hiddenctrl" name="p_amount" id="p_amount_###" index="###" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" disabled>
+                                 <input type="text" class="form-control symbol-unit" name="p_amountshow" id="p_amount_###_show" index="###" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" disabled>
+                                 </td>
+                              <td class="red-color" style="border: none;">
+                                 <i class="fas fa-times-circle" id="p_delete_###" index="###" onclick="delRow(this);"></i>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     <button type="button" class="btn border" onClick="addRow(this)"><i class="fas fa-plus"></i> Add Row</button>
+                  </div>
+               </div>
+            </div>
+         </div>   
+      </div>
+      <div class="row pb-3">
+         <div class="col-12 col-md-6">
+            <div class="container">
+            <div class="d-flex flex-column" style="gap: 20px">
+               <div class="row">
+                  <div class="col-3 d-flex justify-content-end align-items-center form-inline">
+                  <label for="customerNotes" class="form-label float-end mb-0">Customer Notes</label>
+                  </div>
+                  <div class="col-8">
+                  <textarea class="form-control" id="customerNotes" rows="3"></textarea>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-3 d-flex justify-content-end align-items-center form-inline">
+                  <label for="termsConditions" class="form-label float-end mb-0">Terms & Conditions</label>
+                  </div>
+                  <div class="col-8">
+                  <textarea class="form-control" id="termsConditions" rows="3"></textarea>
+                  </div>
+               </div>
+            </div>
+            </div>
+            <!-- Notes -->
+         </div>
+         <div class="col-12 col-md-6">
+            <div class="container">
+            <div class="d-flex flex-column" style="gap: 20px">
+               <div class="row">
+                  <div class="col-3 d-flex justify-content-end align-items-center form-inline">
+                  <label for="subTotal" class="form-label float-end mb-0">Sub Total</label>
+                  </div>
+                  <div class="col-8">
+                  <input type="number" class="form-control" id="subTotal" onchange="CalculateGrandTotal(event,this)" disabled/>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-3 d-flex justify-content-end align-items-center form-inline">
+                  <label for="shippingCharges" class="form-label float-end mb-0">Shipping Charges</label>
+                  </div>
+                  <div class="col-8">
+                  <input type="number" class="form-control" id="shippingCharges" onchange="CalculateGrandTotal(event,this)"/>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-3 d-flex justify-content-end align-items-center form-inline">
+                  <label for="adjustment" class="form-label float-end mb-0">Adjustment</label>
+                  </div>
+                  <div class="col-8">
+                  <input type="number" class="form-control" id="adjustment"onchange="CalculateGrandTotal(event,this)"/>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-3 d-flex justify-content-end align-items-center form-inline">
+                  <label for="grandTotal" class="form-label float-end mb-0">Grand Total</label>
+                  </div>
+                  <div class="col-8">
+                  <input type="number" class="form-control" id="grandTotal" disabled/>
+                  </div>
+               </div>
+            </div>
+            </div>
+         </div>
+      </div>
+      <div class="row pb-3 mt-5">
+         <div class="col-12">
+            <div class="w-25 d-block mx-auto text-center">
+             
+            </div>
+         </div>
+      </div>       
+      <nav class="navbar navbar-expand-sm  bg-white navbar-white fixed-bottom mt-5  border-top ">         
+      <a class="w-25 " data-toggle="modal" href="#myModal" style="cursor:pointer;display:none;">Edit Existing Sample Sales Order</a>
+         <ul class="navbar-nav justify-content-end w-50">
+           <li class="nav-item" style="display: none;">
+            <button type="reset" class="btn btn-primary ash mr-2" id="cancelBtn" onclick="location.reload();">Cancel</button>
+           </li>
+           <li class="nav-item">
+            <button type="submit" class="btn btn-primary ash mr-2" id="saveAsDraftBtn">Save as Sample</button>
+          </li>
+           <li class="nav-item">
+             <button type="submit" class="btn btn-primary saveBtn" id="submitBtn">Save</button>
+           </li>
+         </ul>
+       </nav>
+   </form>
+   <div class="modal fade" id="myModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Select Any Sales Order</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          
+          <!-- Modal body -->
+          <div class="modal-body">
+             <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Subject</th>
+            <th>Quote Stage</th>
+            <th>Deal Name</th>
+            <th>Grand Total</th>
+          </tr>
+        </thead>
+        <tbody id="quoteBody">
+           <tr>
+              <td colspan="6">
+                 <div id="loadingDiv" align="center";>
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+              </td>
+           </tr>
+        </tbody>
+      </table>
+    </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>   
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+    <script src="./js/functions.js"></script>
+   <script src="./js/script.js"></script>
+   <script>      
+      $(document).ready(function(){
+            // Initialize select2
+            $("#SelExample").select2();
+         });     
+   </script>
+   </body>
+</html>
